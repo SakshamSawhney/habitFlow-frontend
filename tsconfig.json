@@ -13,6 +13,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    
+    // THIS IS THE FIX for the 'import.meta.env' error
+    // It tells TypeScript to recognize Vite's specific environment variables.
+    "types": ["vite/client"],
 
     /* Linting */
     "strict": true,
@@ -21,6 +25,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  // THIS LINE IS THE FIX for the 'import.meta.env' error
   "references": [{ "path": "./tsconfig.node.json" }]
 }

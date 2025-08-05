@@ -20,7 +20,7 @@ const Dashboard = () => {
     setIsReminderModalOpen(true);
   };
   
-  // This function is defined in the parent and passed down
+  // This function is defined in the parent component (Dashboard)
   const handleAddHabit = async (habitData: { name: string; description?: string; color: string }) => {
     try {
         const { data: newHabit } = await habitService.createHabit(habitData);
@@ -75,7 +75,7 @@ const Dashboard = () => {
       )}
       
       {/* THIS IS THE FIX for the 'addHabit' is missing error. */}
-      {/* The `handleAddHabit` function is correctly passed as the `addHabit` prop. */}
+      {/* The `handleAddHabit` function is now correctly passed as the `addHabit` prop. */}
       <AddHabitModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
