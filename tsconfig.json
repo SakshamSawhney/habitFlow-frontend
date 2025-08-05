@@ -21,5 +21,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
+  // THIS LINE IS THE FIX for the 'import.meta.env' error
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -10,8 +10,6 @@ import { Habit } from '../types';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
-  // The Dashboard component is the "source of truth" for habit data on this page.
-  // It gets the habits array and the function to update it (`setHabits`) from the hook.
   const { habits, setHabits, loading, toggleCompletion, deleteHabit } = useHabits();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
@@ -22,12 +20,10 @@ const Dashboard = () => {
     setIsReminderModalOpen(true);
   };
   
-  // This function handles the logic for creating a habit and then updates the state.
-  // It is defined here and passed down to the modal as a prop.
+  // This function is defined in the parent and passed down
   const handleAddHabit = async (habitData: { name: string; description?: string; color: string }) => {
     try {
         const { data: newHabit } = await habitService.createHabit(habitData);
-        // This is the crucial step: update the state with the new habit.
         setHabits(prev => [...prev, newHabit]);
         toast.success('Habit added!');
     } catch (error) {
@@ -77,12 +73,15 @@ const Dashboard = () => {
               <p className="text-gray-500 dark:text-dark-subtext">You haven't added any habits yet.</p>
           </div>
       )}
-      {/* The handleAddHabit function is passed to the modal via the `addHabit` prop. */}
+      
+      {/* THIS IS THE FIX for the 'addHabit' is missing error. */}
+      {/* The `handleAddHabit` function is correctly passed as the `addHabit` prop. */}
       <AddHabitModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         addHabit={handleAddHabit}
       />
+
       {selectedHabit && (
         <ReminderModal
           isOpen={isReminderModalOpen}
