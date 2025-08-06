@@ -1,7 +1,9 @@
 import { useState, FormEvent } from 'react';
 import Modal from '../ui/Modal';
 
-// The component's props are defined here. It expects to receive a function called `addHabit`.
+ // .....
+//  The component's props are defined here. It expects to receive a function called `addHabit`.
+ // .....
 interface AddHabitModalProps {
     isOpen: boolean;
     onClose: () => void;
