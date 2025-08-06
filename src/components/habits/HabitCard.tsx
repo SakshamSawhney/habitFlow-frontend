@@ -1,6 +1,7 @@
 import { Habit } from '../../types';
 import { isToday } from 'date-fns';
 
+//Habit Card Props
 interface HabitCardProps {
   habit: Habit;
   onToggle: () => void;
