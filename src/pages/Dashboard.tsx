@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { useHabits } from '../hooks/useHabits';
-import { habitService } from '../api';
 import AddHabitModal from '../components/habits/AddHabitModal';
 import HabitCard from '../components/habits/HabitCard';
 import StatsCard from '../components/habits/StatsCard';
 import ReminderModal from '../components/habits/ReminderModal';
 import { isToday } from 'date-fns';
 import { Habit } from '../types';
-import toast from 'react-hot-toast';
 
 const Dashboard = () => {
-  const { habits, setHabits, loading, toggleCompletion, deleteHabit } = useHabits();
+  const { habits, addHabit, toggleCompletion, deleteHabit } = useHabits();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<Habit | null>(null);
@@ -19,26 +17,11 @@ const Dashboard = () => {
     setSelectedHabit(habit);
     setIsReminderModalOpen(true);
   };
-  
-  // This function is defined in the parent component (Dashboard)
-  const handleAddHabit = async (habitData: { name: string; description?: string; color: string }) => {
-    try {
-        const { data: newHabit } = await habitService.createHabit(habitData);
-        setHabits(prev => [...prev, newHabit]);
-        toast.success('Habit added!');
-    } catch (error) {
-        toast.error('Failed to add habit');
-    }
-  };
 
   const totalHabits = habits.length;
   const completedToday = habits.filter(h => h.completions.some(c => isToday(new Date(c.date)))).length;
   const todaysRate = totalHabits > 0 ? Math.round((completedToday / totalHabits) * 100) : 0;
   const totalStreaks = habits.reduce((acc, habit) => acc + (habit.completions.length || 0), 0);
-
-  if (loading) {
-    return <div>Loading habits...</div>;
-  }
 
   return (
     <div className="dark:text-dark-text">
@@ -73,15 +56,11 @@ const Dashboard = () => {
               <p className="text-gray-500 dark:text-dark-subtext">You haven't added any habits yet.</p>
           </div>
       )}
-      
-      {/* THIS IS THE FIX for the 'addHabit' is missing error. */}
-      {/* The `handleAddHabit` function is now correctly passed as the `addHabit` prop. */}
       <AddHabitModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        addHabit={handleAddHabit}
+        addHabit={addHabit}
       />
-
       {selectedHabit && (
         <ReminderModal
           isOpen={isReminderModalOpen}
