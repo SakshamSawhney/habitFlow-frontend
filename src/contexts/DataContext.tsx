@@ -4,7 +4,6 @@ import { api, habitService, analyticsService } from '../api';
 import { Habit } from '../types';
 import toast from 'react-hot-toast';
 
-// Define the shape of the data and functions in our context
 interface DataContextType {
     habits: Habit[];
     friends: any[];
@@ -62,7 +61,6 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
             const { data: newHabit } = await habitService.createHabit(habitData);
             setHabits(prev => [...prev, newHabit]);
             toast.success('Habit added!');
-            // Refetch analytics to update stats
             analyticsService.getAnalytics().then(res => setAnalyticsData(res.data));
         } catch (error) {
             toast.error('Failed to add habit');
@@ -140,4 +138,13 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
             {children}
         </DataContext.Provider>
     );
+};
+
+// THIS IS THE FIX: The 'export' keyword was missing.
+export const useData = () => {
+    const context = useContext(DataContext);
+    if (context === undefined) {
+        throw new Error('useData must be used within a DataProvider');
+    }
+    return context;
 };
