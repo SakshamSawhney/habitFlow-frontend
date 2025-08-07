@@ -5,17 +5,17 @@ import Register from './pages/Register';
 import Friends from './pages/Friends';
 import Analytics from './pages/Analytics';
 import Profile from './pages/Profile';
-import FriendProfile from './pages/FriendProfile'; // New page for viewing friend profiles
+import FriendProfile from './pages/FriendProfile';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import MainLayout from './components/layout/MainLayout';
 import { useAuth } from './hooks/useAuth';
+import { useData } from './contexts/DataContext';
 
 function App() {
-  const { loading } = useAuth();
+  const { loading: authLoading } = useAuth();
+  const { loading: dataLoading } = useData();
 
-  if (loading) {
-    return <div className="flex justify-center items-center h-screen bg-gray-900 text-white">Loading...</div>;
-  }
+  const isLoading = authLoading || dataLoading;
 
   return (
     <Routes>
@@ -27,13 +27,19 @@ function App() {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/friends" element={<Friends />} />
-                <Route path="/friends/:userId" element={<FriendProfile />} /> {/* New route */}
-                <Route path="/profile" element={<Profile />} />
-              </Routes>
+              {isLoading ? (
+                <div className="flex justify-center items-center h-full">
+                    <p>Loading Application...</p>
+                </div>
+              ) : (
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/friends" element={<Friends />} />
+                  <Route path="/friends/:userId" element={<FriendProfile />} />
+                  <Route path="/profile" element={<Profile />} />
+                </Routes>
+              )}
             </MainLayout>
           </ProtectedRoute>
         } 
