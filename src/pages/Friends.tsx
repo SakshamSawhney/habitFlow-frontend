@@ -51,7 +51,7 @@ const Friends = () => {
                 <div className="p-4 bg-white dark:bg-dark-card rounded-lg shadow">
                     <h2 className="text-xl font-semibold mb-2">Incoming Requests ({incomingRequests.length})</h2>
                     <div className="space-y-2">
-                        {incomingRequests.map(req => (
+                        {incomingRequests.map((req: any) => (
                             <div key={req._id} className="flex justify-between items-center p-2 bg-gray-100 dark:bg-gray-700 rounded">
                                 <span>{req.requester.displayName}</span>
                                 <div className="flex gap-2">
@@ -65,7 +65,7 @@ const Friends = () => {
                 <div className="p-4 bg-white dark:bg-dark-card rounded-lg shadow">
                     <h2 className="text-xl font-semibold mb-2">Friends ({friends.length})</h2>
                      <div className="space-y-2">
-                        {friends.map(friendship => {
+                        {friends.map((friendship: any) => {
                             const friendUser = friendship.requester._id === user?._id ? friendship.recipient : friendship.requester;
                             return (
                                 <div key={friendship._id} className="flex justify-between items-center p-2 bg-gray-100 dark:bg-gray-700 rounded">
