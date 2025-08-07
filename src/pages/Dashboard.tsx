@@ -5,7 +5,7 @@ import HabitCard from '../components/habits/HabitCard';
 import StatsCard from '../components/habits/StatsCard';
 import ReminderModal from '../components/habits/ReminderModal';
 import { isToday } from 'date-fns';
-import { Habit } from '../types';
+import { Habit, Completion } from '../types';
 
 const Dashboard = () => {
   const { habits, addHabit, toggleCompletion, deleteHabit } = useHabits();
@@ -18,10 +18,11 @@ const Dashboard = () => {
     setIsReminderModalOpen(true);
   };
 
+  // THIS IS THE FIX: Added explicit types for parameters
   const totalHabits = habits.length;
-  const completedToday = habits.filter(h => h.completions.some(c => isToday(new Date(c.date)))).length;
+  const completedToday = habits.filter((h: Habit) => h.completions.some((c: Completion) => isToday(new Date(c.date)))).length;
   const todaysRate = totalHabits > 0 ? Math.round((completedToday / totalHabits) * 100) : 0;
-  const totalStreaks = habits.reduce((acc, habit) => acc + (habit.completions.length || 0), 0);
+  const totalStreaks = habits.reduce((acc: number, habit: Habit) => acc + (habit.completions.length || 0), 0);
 
   return (
     <div className="dark:text-dark-text">
@@ -41,7 +42,7 @@ const Dashboard = () => {
         </button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {habits.map(habit => (
+        {habits.map((habit: Habit) => (
           <HabitCard
             key={habit._id}
             habit={habit}
